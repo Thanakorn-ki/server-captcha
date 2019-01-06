@@ -67,14 +67,14 @@ func generateCaptcha() (int, string) {
 	first := rand.Intn(8) + 1
 	second := rand.Intn(8) + 1
 	ops := rand.Intn(2) + 1
-	var sum = 0
+	var answer = 0
 	if ops == 1 {
-		sum = first + second
+		answer = first + second
 	} else if ops == 2 {
-		sum = first - second
+		answer = first - second
 	} else if ops == 3 {
-		sum = first * second
+		answer = first * second
 	}
 	captcha := captcha.Captcha(rand.Intn(1)+1, first, ops, second)
-	return sum, captcha
+	return answer, captcha
 }
