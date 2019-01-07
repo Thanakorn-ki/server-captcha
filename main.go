@@ -7,13 +7,14 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/salapao2136/captcha"
+
 	"github.com/gin-gonic/gin"
 	mgo "github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
-	"github.com/salapao2136/captcha"
 )
 
-func main() {
+func mongoConnect() *mgo.Session {
 	uri := fmt.Sprintf("mongodb://root:root@127.0.0.1:27017")
 
 	fmt.Println("Program Start...")
@@ -21,10 +22,16 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	return session
+}
+func main() {
+	session := mongoConnect()
 	defer session.Close()
 	collection := session.DB("workshop").C("captcha")
 
 	r := gin.New()
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -44,7 +51,7 @@ func main() {
 			})
 
 		if err != nil {
-			c.AbortWithStatus(http.StatusBadRequest)
+			c.AbortWithError(http.StatusBadRequest, err)
 		}
 
 		c.JSON(200, gin.H{
