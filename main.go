@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"net/http"
 	"time"
@@ -20,7 +19,7 @@ func mongoConnect() *mgo.Session {
 	fmt.Println("Program Start...")
 	session, err := mgo.Dial(uri)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	return session
